@@ -1,4 +1,4 @@
-*/Instructions for Execution:
+/*Instructions for Execution:
 
 1.	Run Reader Process
 2.	Then Run Writer Process*/
@@ -12,12 +12,14 @@ int main()
 {
     int fd;
     char buf[1024];
-    /* create the FIFO (named pipe) */ char *myfifo = "/tmp/myfifo";
+    /* create the FIFO (named pipe) */
+    char *myfifo = "/tmp/myfifo";
     mkfifo(myfifo, 0666);
     printf("Run Reader process to read the FIFO File\n");
     fd = open(myfifo, O_WRONLY);
     write(fd, "Hi", sizeof("Hi"));
-    /* write "Hi" to the FIFO */ close(fd);
+    /* write "Hi" to the FIFO */
+    close(fd);
     unlink(myfifo); /* remove the FIFO */
     return 0;
 }
