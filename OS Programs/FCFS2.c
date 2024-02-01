@@ -19,7 +19,8 @@ int main()
     }
 
     printf("\nProcess\t\tBurst Time\tWaiting Time\tTurnaround Time");
-    // calculating turnaround time for(i=0;i<n;i++)
+    // calculating turnaround time
+    for(i=0;i<n;i++)
     {
         tat[i] = bt[i] + wt[i];
         avwt += wt[i];
