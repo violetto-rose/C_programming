@@ -1,4 +1,5 @@
-#include <stdio.h> void main()
+#include <stdio.h>
+void main()
 {
     int buffer[10], bufsize, in, out, produce, consume, choice = 0;
     in = 0;

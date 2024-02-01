@@ -1,4 +1,6 @@
-#include <stdio.h> #include <stdlib.h> int main()
+#include <stdio.h>
+#include <stdlib.h>
+int main()
 {
     int Max[10][10], need[10][10], alloc[10][10], avail[10], completed[10], safeSequence[10];
     int p, r, i, j, process, count;

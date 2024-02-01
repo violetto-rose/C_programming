@@ -1,4 +1,15 @@
-#include <fcntl.h> #include <sys/stat.h> #include <sys/types.h> #include <unistd.h> #include <stdio.h> #define MAX_BUF 1024 int main()
+*/Instructions for Execution:
+
+1.	Run Reader Process
+2.	Then Run Writer Process*/
+
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h> 
+#define MAX_BUF 1024
+int main()
 {
     int fd;
     /* A temp FIFO file is not created in reader */ char *myfifo = "/tmp/myfifo";
@@ -9,7 +20,3 @@
     close(fd);
     return 0;
 }
-*/Instructions for Execution:
-
-1.	Run Reader Process
-2.	Then Run Writer Process*/

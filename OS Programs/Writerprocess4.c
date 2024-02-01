@@ -1,4 +1,14 @@
-#include <stdio.h> #include <fcntl.h> #include <sys/stat.h> #include <sys/types.h> #include <unistd.h> int main()
+*/Instructions for Execution:
+
+1.	Run Reader Process
+2.	Then Run Writer Process*/
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main()
 {
     int fd;
     char buf[1024];
@@ -11,7 +21,3 @@
     unlink(myfifo); /* remove the FIFO */
     return 0;
 }
-*/Instructions for Execution:
-
-1.	Run Reader Process
-2.	Then Run Writer Process*/
