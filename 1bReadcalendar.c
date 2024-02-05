@@ -1,3 +1,5 @@
+/*B) Write functions create(), read() and display(); to create the calendar, to read the data from the keyboard and to print weeks activity details report on screen.*/
+
 #include <stdio.h>
 #include <string.h>
 struct Day

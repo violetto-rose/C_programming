@@ -1,3 +1,12 @@
+/*3) Develop a menu driven Program in C for the following operations on STACK of Integers (Array Implementation of Stack with maximum size MAX)
+a. Push an Element on to Stack
+b. Pop an Element from Stack
+c. Demonstrate how Stack can be used to check Palindrome
+d. Demonstrate Overflow and Underflow situations on Stack
+e. Display the status of Stack
+f. Exit
+Support the program with appropriate functions for each of the above operations.*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,7 +53,7 @@ int main()
             exit(0);
             break;
         default:
-            printf("\nInvalid choice:\n");
+            printf("\nInvalid choice\n");
             break;
         }
     }
@@ -54,7 +63,7 @@ void push() // Inserting element into the stack
 {
     if (top == (max_size - 1))
     {
-        printf("\nStack Overflow:");
+        printf("\nStack Overflow");
     }
     else
     {
@@ -69,7 +78,7 @@ void pop() // deleting an element from the stack
 {
     if (top == -1)
     {
-        printf("Stack Underflow:");
+        printf("Stack Underflow");
         flag = 0;
     }
     else
@@ -104,7 +113,7 @@ void pali()
                 }
             }
         }
-        printf("Not Palindrome\n");
+        printf("Not a Palindrome\n");
     }
 }
 void display()
@@ -113,7 +122,7 @@ void display()
     top = temp;
     if (top == -1)
     {
-        printf("\nStack is Empty:");
+        printf("\nStack is Empty");
     }
     else
     {

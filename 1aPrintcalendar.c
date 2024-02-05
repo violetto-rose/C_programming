@@ -1,3 +1,5 @@
+/*A) Declare a calendar as an array of 7 elements (A dynamically Created array) to represent 7 days of a week. Each Element of the array is a structure having three fields. The first field is the name of the Day (A dynamically allocated String), The second field is the date of the Day (A integer), the third field is the description of the activity for a particular day (A dynamically allocated String).*/
+
 #include <stdio.h>
 #include <string.h>
 struct Day
