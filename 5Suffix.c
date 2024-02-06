@@ -57,7 +57,7 @@ float pop()
 {
     if (s.top == -1)
     {
-        printf("Stack is emplty\nSTACK UNDERFLOW\n");
+        printf("Stack is empty\nStack underflow\n");
         getch();
     }
     else
