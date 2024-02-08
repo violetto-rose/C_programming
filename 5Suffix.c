@@ -1,4 +1,4 @@
-/*A) Develop a Program in C for the following Stack Applications for evaluation of Suffix expression with single digit operands and operators: +, -, *, /, %, ^.*/
+/*5) Develop a Program in C for the following Stack Applications for evaluation of Suffix expression with single digit operands and operators: +, -, *, /, %, ^.*/
 
 #include <stdio.h>
 #include <conio.h>

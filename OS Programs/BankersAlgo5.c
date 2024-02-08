@@ -1,3 +1,5 @@
+/*Develop a C program to simulate Bankers Algorithm for DeadLock Avoidance.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 int main()

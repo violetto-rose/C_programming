@@ -1,5 +1,6 @@
-/*Instructions for Execution:
+/*Develop a C program which demonstrates interprocess communication between a reader process and a writer process. Use mkfifo, open, read, write and close APIs in your program.
 
+Instructions for Execution:
 1.	Run Reader Process
 2.	Then Run Writer Process*/
 
@@ -13,7 +14,7 @@ int main()
 {
     int fd;
     /* A temp FIFO file is not created in reader */
-    char *myfifo = "/tmp/myfifo";
+    char *myfifo = "myfifo";
     char buf[MAX_BUF];
     /* open, read, and display the message from the FIFO */
     fd = open(myfifo, O_RDONLY);
