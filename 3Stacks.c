@@ -69,7 +69,7 @@ void push() // Inserting element into the stack
     {
         printf("Enter the element to be inserted:\t");
         scanf("%d", &item);
-        top = top + 1;
+        top++;
         stack[top] = item;
     }
     temp = top;
@@ -84,7 +84,7 @@ void pop() // deleting an element from the stack
     else
     {
         item = stack[top];
-        top = top - 1;
+        top--;
     }
 }
 void pali()
