@@ -12,7 +12,7 @@ Support the program with appropriate functions for each of the above operations.
 #include <string.h>
 #define max_size 5
 int stack[max_size], top = -1, flag = 1;
-int i, temp, item, rev[max_size], num[max_size];
+int i, temp, item, rev[max_size;
 void push();
 void pop();
 void display();
