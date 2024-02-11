@@ -12,7 +12,7 @@ Support the program with appropriate functions for each of the above operations.
 #include <string.h>
 #define max_size 5
 int stack[max_size], top = -1, flag = 1;
-int i, temp, item, rev[max_size], num[max_size];
+int i, temp, item, rev[max_size];
 void push();
 void pop();
 void display();
@@ -69,7 +69,7 @@ void push() // Inserting element into the stack
     {
         printf("Enter the element to be inserted:\t");
         scanf("%d", &item);
-        top = top + 1;
+        top++;
         stack[top] = item;
     }
     temp = top;
@@ -84,7 +84,7 @@ void pop() // deleting an element from the stack
     else
     {
         item = stack[top];
-        top = top - 1;
+        top--;
     }
 }
 void pali()
