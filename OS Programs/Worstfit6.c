@@ -1,6 +1,5 @@
-/*Develop a C program to simulate the following contiguous memory allocation
-Techniques
-a)	Worst fit*/
+/*Develop a C program to simulate the following contiguous memory allocation techniques
+a)Worst fit*/
 
 #include <stdio.h>
 int main()

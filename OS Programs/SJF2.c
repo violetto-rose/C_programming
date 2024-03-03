@@ -1,8 +1,5 @@
 /*Simulate the following CPU scheduling algorithms to find turnaround time and waiting time
-a) FCFS
-b) SJF
-c) Round Robin
-d) Priority.*/
+b) SJF*/
 
 #include <stdio.h>
 int main()
