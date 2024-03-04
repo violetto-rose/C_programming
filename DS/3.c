@@ -45,6 +45,27 @@ int pop(struct Stack *s) {
     }
 }
 
+// Function to check if stack elements form a palindrome
+bool isPalindrome(struct Stack *s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+        return false;
+    }
+    
+    int temp[MAX];
+    int i = 0;
+    while (!isEmpty(s)) {
+        temp[i++] = pop(s);
+    }
+
+    for (int j = 0; j < i / 2; j++) {
+        if (temp[j] != temp[i - j - 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main() {
     struct Stack s;
     initializeStack(&s);
@@ -55,7 +76,8 @@ int main() {
         printf("\nMenu:\n");
         printf("1. Push\n");
         printf("2. Pop\n");
-        printf("3. Exit\n");
+        printf("3. Check if palindrome\n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -69,12 +91,19 @@ int main() {
                 pop(&s);
                 break;
             case 3:
+                if (isPalindrome(&s)) {
+                    printf("Stack elements form a palindrome.\n");
+                } else {
+                    printf("Stack elements do not form a palindrome.\n");
+                }
+                break;
+            case 4:
                 printf("Exiting program.\n");
                 break;
             default:
                 printf("Invalid choice! Please enter a valid choice.\n");
         }
-    } while (choice != 3);
+    } while (choice != 4);
 
     return 0;
 }
