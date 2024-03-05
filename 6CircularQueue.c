@@ -9,15 +9,41 @@ d. Display the status of Circular QUEUE e. Exit Support the program with appropr
 #define SIZE 5
 
 char CQ[SIZE];
-int front = -1;
-int rear = -1;
-int ch, ele;
+int front = -1, rear = -1, ele, ch;
 
-int IsFull();
-int IsEmpty();
-void insert(char);
-void delete();
-void display();
+int IsFull() { return (front == (rear + 1) % SIZE); }
+int IsEmpty() { return (front == -1); }
+
+void insert(char item)
+{
+    if (IsEmpty())
+        front = 0;
+    rear = (rear + 1) % SIZE;
+    CQ[rear] = item;
+}
+
+void delete()
+{
+    printf("Deleted element is: %c\n", CQ[front]);
+    if (front == rear)
+        front = rear = -1;
+    else
+        front = (front + 1) % SIZE;
+}
+
+void display()
+{
+    int i;
+    if (IsEmpty())
+        printf("Circular Queue is Empty\n");
+    else
+    {
+        printf("Elements of the circular queue are: ");
+        for (i = front; i != rear; i = (i + 1) % SIZE)
+            printf("%c ", CQ[i]);
+        printf("%c\n", CQ[i]);
+    }
+}
 
 int main()
 {
@@ -42,7 +68,7 @@ int main()
             if (IsEmpty())
                 printf("Circular Queue Underflow\n");
             else
-                delete();
+                delete ();
             break;
         case 3:
             if (IsEmpty())
@@ -57,54 +83,4 @@ int main()
         }
     }
     return 0;
-}
-
-int IsFull()
-{
-    if (front == (rear + 1) % SIZE)
-        return 1;
-    return 0;
-}
-
-int IsEmpty()
-{
-    if (front == -1)
-        return 1;
-    else if (front == rear)
-    {
-        printf("Deleted element is: %c\n", CQ[front]);
-        front = -1;
-        return 1;
-    }
-    return 0;
-}
-
-void insert(char item)
-{
-    if (front == -1)
-        front++;
-    rear = (rear + 1) % SIZE;
-    CQ[rear] = item;
-}
-
-void delete()
-{
-    char item;
-    item = CQ[front];
-    printf("Deleted element is: %c\n", item);
-    front = (front + 1) % SIZE;
-}
-
-void display()
-{
-    int i;
-    if (front == -1)
-        printf("Circular Queue is Empty\n");
-    else
-    {
-        printf("Elements of the circular queue are: ");
-        for (i = front; i != rear; i = (i + 1) % SIZE)
-            printf("%c ", CQ[i]);
-        printf("%c\n", CQ[i]);
-    }
 }

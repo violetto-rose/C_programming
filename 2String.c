@@ -3,36 +3,38 @@
 #include <stdio.h>
 #include <string.h>
 
-void main()
-{
+int main() {
     char STR[100], PAT[100], REP[100], ans[100];
-    int i, j, c, m, k, flag = 0;
+    int i = 0, j = 0, c = 0, m = 0, flag = 0;
+
     printf("Enter the MAIN string:\n");
-    gets(STR);
+    fgets(STR, sizeof(STR), stdin);
+
     printf("Enter the PATTERN string:\n");
-    gets(PAT);
-    printf("Enter the REPLACE string: \n");
-    gets(REP);
-    i = m = c = j = 0;
-    while (STR[c] != '\0')
-    {
-        if (STR[m] == PAT[i])
-        {
+    fgets(PAT, sizeof(PAT), stdin);
+
+    printf("Enter the REPLACE string:\n");
+    fgets(REP, sizeof(REP), stdin);
+
+    // Remove new line characters from inputs
+    STR[strcspn(STR, "\n")] = '\0';
+    PAT[strcspn(PAT, "\n")] = '\0';
+    REP[strcspn(REP, "\n")] = '\0';
+
+    while (STR[c] != '\0') {
+        if (STR[m] == PAT[i]) {
             i++;
             m++;
-            if (PAT[i] == '\0')
-            {
+            if (PAT[i] == '\0') {
                 flag = 1;
-                for (k = 0; REP[k] != '\0'; k++, j++)
-                {
+                // Replace pattern with replacement string
+                for (int k = 0; REP[k] != '\0'; k++, j++) {
                     ans[j] = REP[k];
                 }
                 i = 0;
                 c = m;
             }
-        }
-        else
-        {
+        } else {
             ans[j] = STR[c];
             j++;
             c++;
@@ -41,13 +43,12 @@ void main()
         }
     }
 
-    if (flag == 0)
-    {
+    if (flag == 0) {
         printf("Pattern not found\n");
-    }
-    else
-    {
+    } else {
         ans[j] = '\0';
         printf("The RESULTANT string is: %s\n", ans);
     }
+
+    return 0;
 }

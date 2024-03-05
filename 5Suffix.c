@@ -1,30 +1,36 @@
 /*5) Develop a Program in C for the following Stack Applications for evaluation of Suffix expression with single digit operands and operators: +, -, *, /, %, ^.*/
 
 #include <stdio.h>
-#include <conio.h>
+#include <stdlib.h>
 #include <math.h>
+
 #define MAX 20
-struct stack
-{
+
+struct stack {
     int top;
     float str[MAX];
-} s;               // stack
-char postfix[MAX]; // postfix void push(float);
+} s; // stack
+
+char postfix[MAX]; // postfix
+
+void push(float);
 float pop();
 int isoperand(char);
 float operate(float, float, char);
-int main()
-{
+
+int main() {
     int i = 0;
-    printf("Enter Expression:");
+    printf("Enter Expression: ");
     scanf("%s", postfix);
     float ans, op1, op2;
-    while (postfix[i] != '\0')
-    {
+    
+    // Initialize the stack
+    s.top = -1;
+
+    while (postfix[i] != '\0') {
         if (isoperand(postfix[i]))
-            push(postfix[i] - 48);
-        else
-        {
+            push((float)(postfix[i] - '0')); // Convert char to float
+        else {
             op1 = pop();
             op2 = pop();
             ans = operate(op1, op2, postfix[i]);
@@ -33,52 +39,51 @@ int main()
         }
         i++;
     }
-    printf("%f", s.str[s.top]);
-    getch();
+    printf("Result: %f\n", s.str[s.top]);
+    return 0;
 }
-int isoperand(char x)
-{
-    if (x >= '0' && x <= '9')
-        return 1;
-    else
-        return 0;
+
+int isoperand(char x) {
+    return (x >= '0' && x <= '9');
 }
-void push(float x)
-{
-    if (s.top == MAX - 1)
-        printf("Stack is full\nStack overflow\n");
-    else
-    {
+
+void push(float x) {
+    if (s.top == MAX - 1) {
+        printf("Stack overflow\n");
+        exit(EXIT_FAILURE);
+    }
+    else {
         s.top++;
         s.str[s.top] = x;
     }
 }
-float pop()
-{
-    if (s.top == -1)
-    {
-        printf("Stack is empty\nStack underflow\n");
-        getch();
+
+float pop() {
+    if (s.top == -1) {
+        printf("Stack underflow\n");
+        exit(EXIT_FAILURE);
     }
-    else
-    {
+    else {
+        float temp = s.str[s.top];
         s.top--;
-        return s.str[s.top + 1];
+        return temp;
     }
 }
-float operate(float op1, float op2, char a)
-{
-    switch (a)
-    {
-    case '+':
-        return op2 + op1;
-    case '-':
-        return op2 - op1;
-    case '*':
-        return op2 * op1;
-    case '/':
-        return op2 / op1;
-    case '^':
-        return pow(op2, op1);
+
+float operate(float op1, float op2, char a) {
+    switch (a) {
+        case '+':
+            return op2 + op1;
+        case '-':
+            return op2 - op1;
+        case '*':
+            return op2 * op1;
+        case '/':
+            return op2 / op1;
+        case '^':
+            return pow(op2, op1);
+        default:
+            printf("Invalid operator\n");
+            exit(EXIT_FAILURE);
     }
 }

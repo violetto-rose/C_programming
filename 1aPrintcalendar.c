@@ -1,48 +1,90 @@
-/*A) Declare a calendar as an array of 7 elements (A dynamically Created array) to represent 7 days of a week. Each Element of the array is a structure having three fields. The first field is the name of the Day (A dynamically allocated String), The second field is the date of the Day (A integer), the third field is the description of the activity for a particular day (A dynamically allocated String).*/
+/*A) Declare a calendar as an array of 7 elements (A dynamically Created array) to represent 7 days of a week. Each Element of the array is a structure having three fields. The first field is the name of the Day (A dynamically allocated String), The second field is the date of the Day (A integer), the third field is the description of the activity for a particular day (A dynamically allocated String).
+B) Write functions create(), read() and display(); to create the calendar, to read the data from the keyboard and to print weeks activity details report on screen.*/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-struct Day
-{
-    char name[20];
-    int date;
-    char activity[100];
+
+// Structure to represent a day
+struct Day {
+    char *name;       // Name of the day
+    int date;         // Date of the day
+    char *activity;   // Description of the activity
 };
-int main()
-{
-    struct Day Calendar[7];
-    strcpy(Calendar[0].name, "Monday");
-    Calendar[0].date = 1;
-    strcpy(Calendar[0].activity, "Work from 9AM to 5PM");
 
-    strcpy(Calendar[1].name, "Tuesday");
-    Calendar[1].date = 2;
-    strcpy(Calendar[1].activity, "Meeting at 10AM");
+// Function to dynamically allocate memory for a string
+char* allocateStringMemory(char* str) {
+    char* dynamicStr = (char*)malloc(strlen(str) + 1);
+    strcpy(dynamicStr, str);
+    return dynamicStr;
+}
 
-    strcpy(Calendar[2].name, "Wednesday");
-    Calendar[2].date = 3;
-    strcpy(Calendar[2].activity, "Gym at 6PM");
-
-    strcpy(Calendar[3].name, "Thursday");
-    Calendar[3].date = 4;
-    strcpy(Calendar[3].activity, "Dinner with friends at 7PM");
-
-    strcpy(Calendar[4].name, "Friday");
-    Calendar[4].date = 5;
-    strcpy(Calendar[4].activity, "Movie night at 8PM");
-
-    strcpy(Calendar[5].name, "Saturday");
-    Calendar[5].date = 6;
-    strcpy(Calendar[5].activity, "Weekend getaway");
-
-    strcpy(Calendar[6].name, "Sunday");
-    Calendar[6].date = 7;
-    strcpy(Calendar[6].activity, "Relax and recharge");
-
-    printf("Calendar of the week:\n");
-    for (int i = 0; i < 7; i++)
-    {
-        printf("%s(Date:%d):%s\n", Calendar[i].name, Calendar[i].date, Calendar[i].activity);
+// Function to create a calendar
+struct Day* createCalendar(int numDays) {
+    struct Day* calendar = (struct Day*)malloc(numDays * sizeof(struct Day));
+    if (calendar == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1);
     }
+    for (int i = 0; i < numDays; i++) {
+        calendar[i].name = NULL;
+        calendar[i].activity = NULL;
+    }
+    return calendar;
+}
+
+// Function to read data for each day of the calendar
+void readCalendar(struct Day* calendar, int numDays) {
+    for (int i = 0; i < numDays; i++) {
+        char name[20];
+        int date;
+        char activity[100];
+
+        printf("Enter the name of day %d: ", i + 1);
+        scanf("%s", name);
+        calendar[i].name = allocateStringMemory(name);
+
+        printf("Enter the date of day %d: ", i + 1);
+        scanf("%d", &date);
+        calendar[i].date = date;
+
+        printf("Enter the activity for day %d: ", i + 1);
+        scanf(" %[^\n]", activity);
+        calendar[i].activity = allocateStringMemory(activity);
+    }
+}
+
+// Function to display the calendar
+void displayCalendar(struct Day* calendar, int numDays) {
+    printf("Day\tDate\tActivity\n");
+    for (int i = 0; i < numDays; i++) {
+        printf("%s\t%d\t%s\n", calendar[i].name, calendar[i].date, calendar[i].activity);
+    }
+}
+
+// Function to free memory allocated for the calendar
+void freeCalendar(struct Day* calendar, int numDays) {
+    for (int i = 0; i < numDays; i++) {
+        free(calendar[i].name);
+        free(calendar[i].activity);
+    }
+    free(calendar);
+}
+
+int main() {
+    int numDays = 7;
+
+    // Create calendar
+    struct Day* calendar = createCalendar(numDays);
+
+    // Read data for each day
+    readCalendar(calendar, numDays);
+
+    // Display calendar
+    displayCalendar(calendar, numDays);
+
+    // Free memory
+    freeCalendar(calendar, numDays);
+
     return 0;
 }
