@@ -9,6 +9,7 @@ Support the program with appropriate functions for each of the above operations.
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define MAX 100
 
@@ -54,17 +55,55 @@ int pop(struct Stack *s) {
     }
 }
 
+// Function to check if a string is a palindrome
+bool isPalindrome(char *str) {
+    struct Stack s;
+    initializeStack(&s);
+    
+    int len = strlen(str);
+    int i;
+    
+    // Push half of the characters onto the stack
+    for (i = 0; i < len / 2; i++) {
+        push(&s, str[i]);
+    }
+    
+    // Check if the string is palindrome
+    for (i = (len + 1) / 2; i < len; i++) {
+        if (str[i] != pop(&s)) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// Function to display the status of the stack
+void displayStack(struct Stack *s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+    } else if (isFull(s)) {
+        printf("Stack is full.\n");
+    } else {
+        printf("Stack contains %d elements.\n", s->top + 1);
+        printf("Top element: %d\n", s->items[s->top]);
+    }
+}
+
 int main() {
     struct Stack s;
     initializeStack(&s);
 
     int choice, element;
+    char str[MAX];
 
     do {
         printf("\nMenu:\n");
         printf("1. Push\n");
         printf("2. Pop\n");
-        printf("3. Exit\n");
+        printf("3. Check Palindrome\n");
+        printf("4. Display Stack Status\n");
+        printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -78,12 +117,24 @@ int main() {
                 pop(&s);
                 break;
             case 3:
+                printf("Enter a string: ");
+                scanf("%s", str);
+                if (isPalindrome(str)) {
+                    printf("The string is a palindrome.\n");
+                } else {
+                    printf("The string is not a palindrome.\n");
+                }
+                break;
+            case 4:
+                displayStack(&s);
+                break;
+            case 5:
                 printf("Exiting program.\n");
                 break;
             default:
                 printf("Invalid choice! Please enter a valid choice.\n");
         }
-    } while (choice != 3);
+    } while (choice != 5);
 
     return 0;
 }
