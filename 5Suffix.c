@@ -13,40 +13,6 @@ struct stack {
 
 char postfix[MAX]; // postfix
 
-void push(float);
-float pop();
-int isoperand(char);
-float operate(float, float, char);
-
-int main() {
-    int i = 0;
-    printf("Enter Expression: ");
-    scanf("%s", postfix);
-    float ans, op1, op2;
-    
-    // Initialize the stack
-    s.top = -1;
-
-    while (postfix[i] != '\0') {
-        if (isoperand(postfix[i]))
-            push((float)(postfix[i] - '0')); // Convert char to float
-        else {
-            op1 = pop();
-            op2 = pop();
-            ans = operate(op1, op2, postfix[i]);
-            push(ans);
-            printf("%f %c %f = %f\n", op2, postfix[i], op1, ans);
-        }
-        i++;
-    }
-    printf("Result: %f\n", s.str[s.top]);
-    return 0;
-}
-
-int isoperand(char x) {
-    return (x >= '0' && x <= '9');
-}
-
 void push(float x) {
     if (s.top == MAX - 1) {
         printf("Stack overflow\n");
@@ -86,4 +52,33 @@ float operate(float op1, float op2, char a) {
             printf("Invalid operator\n");
             exit(EXIT_FAILURE);
     }
+}
+
+int isoperand(char x) {
+    return (x >= '0' && x <= '9');
+}
+
+int main() {
+    int i = 0;
+    printf("Enter Expression: ");
+    scanf("%s", postfix);
+    float ans, op1, op2;
+    
+    // Initialize the stack
+    s.top = -1;
+
+    while (postfix[i] != '\0') {
+        if (isoperand(postfix[i]))
+            push((float)(postfix[i] - '0')); // Convert char to float
+        else {
+            op1 = pop();
+            op2 = pop();
+            ans = operate(op1, op2, postfix[i]);
+            push(ans);
+            printf("%f %c %f = %f\n", op2, postfix[i], op1, ans);
+        }
+        i++;
+    }
+    printf("Result: %f\n", s.str[s.top]);
+    return 0;
 }
