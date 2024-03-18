@@ -30,6 +30,7 @@ NODE *create(NODE *node, int data) {
 NODE *search(NODE *node, int key) {
     if (node == NULL || node->data == key) return node;
     if (key < node->data) return search(node->left, key);
+    else if (key > node->data) return search(node->right, key);
     return search(node->right, key);
 }
 
