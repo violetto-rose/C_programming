@@ -73,6 +73,16 @@ bool isStackPalindrome(struct Stack *s) {
     return true;
 }
 
+// Function to display the status of the stack
+void displayStack(struct Stack *s) {
+    if (isEmpty(s)) {
+        printf("Stack is empty.\n");
+    } else {
+        printf("Stack contains %d elements.\n", s->top + 1);
+        printf("Top element: %d\n", s->items[s->top]);
+    }
+}
+
 int main() {
     struct Stack s;
     initializeStack(&s);
@@ -84,7 +94,8 @@ int main() {
         printf("1. Push\n");
         printf("2. Pop\n");
         printf("3. Check Palindrome\n");
-        printf("4. Exit\n");
+        printf("4. Display Stack Status\n");
+        printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -105,6 +116,9 @@ int main() {
                 }
                 break;
             case 4:
+                displayStack(&s);
+                break;
+            case 5:
                 printf("Exiting program.\n");
                 break;
             default:
