@@ -75,7 +75,7 @@ int main() {
             op2 = pop();
             ans = operate(op1, op2, postfix[i]);
             push(ans);
-            printf("%f %c %f = %f\n", op2, postfix[i], op1, ans);
+            printf("%0.3f %c %0.3f = %0.3f\n", op2, postfix[i], op1, ans);
         }
         i++;
     }
