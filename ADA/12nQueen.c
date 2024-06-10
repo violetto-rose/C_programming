@@ -1,1 +1,1 @@
-//Design and implement C/C++ Program for N Queen's problem using Backtracking.
+//Design and implement C Program for N Queen's problem using Backtracking.

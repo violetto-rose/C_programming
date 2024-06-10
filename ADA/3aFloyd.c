@@ -1,4 +1,4 @@
-// a. Design and implement C/C++ Program to solve All-Pairs Shortest Paths problem using Floyd's algorithm.
+// a. Design and implement C Program to solve All-Pairs Shortest Paths problem using Floyd's algorithm.
 
 #include <stdio.h>
 #include <limits.h>
