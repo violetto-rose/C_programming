@@ -25,11 +25,6 @@ struct Graph
 struct GraphNode *createNode(int v)
 {
     struct GraphNode *newNode = (struct GraphNode *)malloc(sizeof(struct GraphNode));
-    if (!newNode)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
     newNode->vertex = v;
     newNode->next = NULL;
     return newNode;
@@ -39,20 +34,10 @@ struct GraphNode *createNode(int v)
 struct Graph *createGraph(int vertices)
 {
     struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
-    if (!graph)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
     graph->numVertices = vertices;
     graph->adjLists = (struct GraphNode **)malloc(vertices * sizeof(struct GraphNode *));
     graph->indegree = (int *)calloc(vertices, sizeof(int)); // Initialize indegree array with 0
-    if (!graph->adjLists || !graph->indegree)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
-    // Initialize adjacency lists as empty
+
     for (int i = 0; i < vertices; i++)
     {
         graph->adjLists[i] = NULL;
@@ -74,22 +59,9 @@ void topologicalSort(struct Graph *graph)
 {
     int *indegree = graph->indegree;
     bool *visited = (bool *)calloc(graph->numVertices, sizeof(bool));
-    if (!visited)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
-
-    // Create a queue for topological ordering
     int *queue = (int *)malloc(graph->numVertices * sizeof(int));
-    if (!queue)
-    {
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-    }
     int front = 0, rear = 0;
 
-    // Enqueue vertices with indegree 0
     for (int i = 0; i < graph->numVertices; i++)
     {
         if (indegree[i] == 0)
@@ -99,12 +71,10 @@ void topologicalSort(struct Graph *graph)
         }
     }
 
-    // Perform topological sorting
     while (front != rear)
     {
         int u = queue[front++];
         printf("%d ", u); // Print the vertex in topological order
-        // Explore all adjacent vertices of dequeued vertex 'u' and decrease their indegree
         struct GraphNode *temp = graph->adjLists[u];
         while (temp != NULL)
         {
