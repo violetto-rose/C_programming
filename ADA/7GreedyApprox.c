@@ -16,6 +16,27 @@ int compare(const void *a, const void *b)
     return (itemB->ratio > itemA->ratio) - (itemB->ratio < itemA->ratio);
 }
 
+void discreteKnapsack(int capacity, Item items[], int n)
+{
+    qsort(items, n, sizeof(Item), compare);
+
+    int totalWeight = 0;
+    int totalValue = 0;
+
+    printf("Discrete Knapsack - Items taken into the knapsack:\n");
+    for (int i = 0; i < n; i++)
+    {
+        if (totalWeight + items[i].weight <= capacity)
+        {
+            totalWeight += items[i].weight;
+            totalValue += items[i].value;
+            printf("Item %d - Value: %d, Weight: %d\n", i + 1, items[i].value, items[i].weight);
+        }
+    }
+    printf("Total weight: %d\n", totalWeight);
+    printf("Total value: %d\n", totalValue);
+}
+
 void fractionalKnapsack(int capacity, Item items[], int n)
 {
     qsort(items, n, sizeof(Item), compare);
@@ -23,7 +44,7 @@ void fractionalKnapsack(int capacity, Item items[], int n)
     int totalWeight = 0;
     float totalValue = 0.0;
 
-    printf("Items taken into the knapsack:\n");
+    printf("Continuous Knapsack - Items taken into the knapsack:\n");
     for (int i = 0; i < n; i++)
     {
         if (totalWeight + items[i].weight <= capacity)
@@ -54,13 +75,25 @@ int main()
     scanf("%d", &capacity);
 
     Item *items = (Item *)malloc(n * sizeof(Item));
-    for (int i = 0; i < n; i++)
+    if (items == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed\n");
+        return 1;
+    }
+
+    for (int i = 0; i < n; i++) 
     {
         printf("Enter value and weight of item %d: ", i + 1);
         scanf("%d %d", &items[i].value, &items[i].weight);
         items[i].ratio = (float)items[i].value / items[i].weight;
     }
 
+    printf("\n=== Discrete Knapsack ===\n");
+    discreteKnapsack(capacity, items, n);
+
+    printf("\n=== Continuous Knapsack ===\n");
     fractionalKnapsack(capacity, items, n);
+
+    free(items);
     return 0;
 }
