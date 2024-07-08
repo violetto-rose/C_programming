@@ -1,1 +1,0 @@
-//Design and implement C Program to solve discrete Knapsack and continuous Knapsack problems using greedy approximation method.

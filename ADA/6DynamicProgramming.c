@@ -12,7 +12,11 @@ int max(int a, int b)
 int knapsack(int W, int wt[], int val[], int n)
 {
     int i, w;
-    int K[n + 1][W + 1];
+    int **K = (int **)malloc((n + 1) * sizeof(int *));
+    for (i = 0; i <= n; i++)
+    {
+        K[i] = (int *)malloc((W + 1) * sizeof(int));
+    }
 
     // Build table K[][] in bottom-up manner
     for (i = 0; i <= n; i++)
