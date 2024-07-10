@@ -1,5 +1,4 @@
 // Design and implement C Program to solve 0/1 Knapsack problem using Dynamic Programming method.
-
 #include <stdio.h>
 
 // Function to find the maximum of two integers

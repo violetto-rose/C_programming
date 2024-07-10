@@ -1,5 +1,4 @@
 // b. Design and implement C Program to find the transitive closure using Warshal's algorithm.
-
 #include <stdio.h>
 
 #define V 4

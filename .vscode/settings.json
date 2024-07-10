@@ -2,5 +2,6 @@
     "files.associations": {
         "conio.h": "c",
         "math.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
