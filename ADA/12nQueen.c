@@ -72,7 +72,7 @@ bool solveNQ(int N)
     // Initialize the board with 0s
     for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
-            board[i][j] = 0;s
+            board[i][j] = 0;
 
     if (solveNQUtil(N, board, 0) == false)
     {
