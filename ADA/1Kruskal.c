@@ -1,114 +1,86 @@
 // Design and implement C Program to find Minimum Cost Spanning Tree of a given connected undirected graph using Kruskal's algorithm.
+
+/*
+Find & Union Functions:
+
+find(int i): This function determines the root of the set in which element i is present.
+unionSets(int i, int j): This function unites two sets containing elements i and j.
+
+Kruskal’s Algorithm:
+
+Initialization: Start by assuming each vertex is its own parent.
+Finding the Minimum Edge: Search for the smallest edge that connects two different sets (i.e., it doesn't form a cycle).
+Union of Sets: After finding an edge, unite the sets containing the two vertices of the edge and add the edge to the result.
+Termination: The algorithm continues until all vertices are connected (i.e., n-1 edges).
+
+Main Function:
+
+The cost matrix defines the graph, where 9999 represents no direct edge between nodes.
+The kruskal() function is called with the number of vertices and the cost matrix to find the minimum spanning tree and its cost.
+*/
+
 #include <stdio.h>
-#include <stdlib.h>
 
-// Structure to represent an edge in the graph
-struct Edge
-{
-    int src, dest, weight;
-};
+#define MAX 100
 
-// Structure to represent a graph
-struct Graph
-{
-    int V, E;          // V: number of vertices, E: number of edges
-    struct Edge *edge; // Array to store edges
-};
+int parent[MAX];
 
-// Function to create a graph with V vertices and E edges
-struct Graph *createGraph(int V, int E)
+int find(int i)
 {
-    struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
-    graph->V = V;
-    graph->E = E;
-    graph->edge = (struct Edge *)malloc(E * sizeof(struct Edge));
-    return graph;
+    while (parent[i] != i)
+        i = parent[i];
+    return i;
 }
 
-// Function to find set of an element i (used in union-find)
-int find(int parent[], int i)
+void unionSets(int i, int j)
 {
-    if (parent[i] == -1)
-        return i;
-    return find(parent, parent[i]);
+    int a = find(i);
+    int b = find(j);
+    parent[a] = b;
 }
 
-// Function to perform union of two sets of x and y (used in union-find)
-void Union(int parent[], int x, int y)
+void kruskal(int n, int cost[MAX][MAX])
 {
-    parent[find(parent, x)] = find(parent, y);
-}
+    int mincost = 0;
 
-// Function to compare two edges according to their weights (used in qsort)
-int compare(const void *a, const void *b)
-{
-    return ((struct Edge *)a)->weight - ((struct Edge *)b)->weight;
-}
+    for (int i = 0; i < n; i++)
+        parent[i] = i;
 
-// Function to find Minimum Cost Spanning Tree using Kruskal's algorithm
-void KruskalMST(struct Graph *graph)
-{
-    int V = graph->V;
-    struct Edge *result = (struct Edge *)malloc(V * sizeof(struct Edge)); // Array to store the resultant MST
-    int e = 0, i = 0;                                                     // Index variables
-
-    // Sort all the edges in non-decreasing order of their weight
-    qsort(graph->edge, graph->E, sizeof(graph->edge[0]), compare);
-
-    int *parent = (int *)malloc(V * sizeof(int));
-    for (int v = 0; v < V; ++v)
-        parent[v] = -1; // Initialize parent array for union-find
-
-    while (e < V - 1 && i < graph->E)
+    int edges = 0;
+    while (edges < n - 1)
     {
-        // Pick the smallest edge
-        struct Edge next_edge = graph->edge[i++];
-        int x = find(parent, next_edge.src);
-        int y = find(parent, next_edge.dest);
+        int min = 9999, u = -1, v = -1;
 
-        // If including this edge doesn't cause cycle, include it in the result
-        if (x != y)
+        for (int i = 0; i < n; i++)
         {
-            result[e++] = next_edge;
-            Union(parent, x, y);
+            for (int j = 0; j < n; j++)
+            {
+                if (find(i) != find(j) && cost[i][j] < min)
+                {
+                    min = cost[i][j];
+                    u = i;
+                    v = j;
+                }
+            }
         }
+
+        unionSets(u, v);
+        printf("Edge %d:(%d, %d) cost:%d\n", edges++, u, v, min);
+        mincost += min;
     }
 
-    // Print the edges in the constructed MST and calculate minimum cost
-    printf("Edges in MST:\n");
-    int minimumCost = 0;
-    for (i = 0; i < e; ++i)
-    {
-        printf("%d -- %d == %d\n", result[i].src, result[i].dest, result[i].weight);
-        minimumCost += result[i].weight;
-    }
-    printf("Minimum Cost Spanning Tree: %d\n", minimumCost);
-
-    // Free allocated memory
-    free(parent);
-    free(result);
+    printf("Minimum cost = %d\n", mincost);
 }
 
 int main()
 {
-    int V, E;
-    printf("Enter number of vertices and edges: ");
-    scanf("%d %d", &V, &E);
+    int n = 4; // Number of vertices
+    int cost[MAX][MAX] = {
+        {9999, 1, 3, 9999},
+        {1, 9999, 3, 6},
+        {3, 3, 9999, 4},
+        {9999, 6, 4, 9999}};
 
-    // Create graph
-    struct Graph *graph = createGraph(V, E);
-    printf("Enter edges (source destination weight):\n");
-
-    // Input edges
-    for (int i = 0; i < E; ++i)
-        scanf("%d %d %d", &graph->edge[i].src, &graph->edge[i].dest, &graph->edge[i].weight);
-
-    // Find Minimum Cost Spanning Tree
-    KruskalMST(graph);
-
-    // Free allocated memory
-    free(graph->edge);
-    free(graph);
-
+    kruskal(n, cost);
     return 0;
 }

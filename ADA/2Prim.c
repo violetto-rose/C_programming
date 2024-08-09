@@ -1,90 +1,73 @@
 // Design and implement C Program to find Minimum Cost Spanning Tree of a given connected undirected graph using Prim's algorithm.
+
+/*
+Data Structures:
+
+key[]: Used to pick the minimum weight edge in each step. It is initialized to a very large number (infinity).
+mstSet[]: Keeps track of vertices included in the Minimum Spanning Tree (MST).
+parent[]: Stores the MST.
+
+Prim’s Algorithm:
+
+Initialization: Start with all keys as infinity and mark all vertices as not yet included in the MST.
+Select Minimum Edge: Pick the vertex with the minimum key value that has not been included in the MST yet.
+Update Keys: After including a vertex in the MST, update the key values of adjacent vertices to reflect the minimum edge weight connecting them to the MST.
+
+Main Function:
+
+The cost matrix defines the graph, where INF represents no direct edge between nodes.
+The prim() function is called with the number of vertices and the cost matrix to find the minimum spanning tree.
+*/
+
 #include <stdio.h>
-#include <limits.h>
-#include <stdbool.h>
 
-#define V 5 // Number of vertices in the graph
+#define MAX 100
+#define INF 9999
 
-int minKey(int key[], bool mstSet[])
+void prim(int n, int cost[MAX][MAX])
 {
-    int min = INT_MAX, min_index;
+    int parent[MAX];
+    int key[MAX];
+    int mstSet[MAX];
 
-    for (int v = 0; v < V; v++)
+    for (int i = 0; i < n; i++)
     {
-        if (mstSet[v] == false && key[v] < min)
-        {
-            min = key[v];
-            min_index = v;
-        }
+        key[i] = INF;
+        mstSet[i] = 0;
     }
 
-    return min_index;
-}
-
-void printMST(int parent[], int graph[V][V])
-{
-    printf("Edge \tWeight\n");
-    for (int i = 1; i < V; i++)
-        printf("%d - %d \t%d \n", parent[i], i, graph[i][parent[i]]);
-}
-
-void primMST(int graph[V][V])
-{
-    int parent[V];  // Array to store constructed MST
-    int key[V];     // Key values used to pick minimum weight edge in cut
-    bool mstSet[V]; // To represent set of vertices not yet included in MST
-
-    // Initialize all keys as INFINITE
-    for (int i = 0; i < V; i++)
-    {
-        key[i] = INT_MAX;
-        mstSet[i] = false;
-    }
-
-    // Always include first  vertex in MST. Make key 0 so that this vertex is picked as first vertex
     key[0] = 0;
-    parent[0] = -1; // First node is always root of MST
+    parent[0] = -1;
 
-    // The MST will have V vertices
-    for (int count = 0; count < V - 1; count++)
+    for (int count = 0; count < n - 1; count++)
     {
-        // Pick the minimum key vertex from the set of vertices not yet included in MST
-        int u = minKey(key, mstSet);
+        int min = INF, u;
 
-        // Add the picked vertex to the MST Set
-        mstSet[u] = true;
+        for (int v = 0; v < n; v++)
+            if (!mstSet[v] && key[v] < min)
+                min = key[v], u = v;
 
-        // Update key value and parent index of the adjacent vertices of the picked vertex.
-        // Consider only those vertices which are not yet included in MST
-        for (int v = 0; v < V; v++)
-        {
-            // graph[u][v] is non-zero only for adjacent vertices of m
-            // mstSet[v] is false for vertices not yet included in MST
-            // Update the key only if graph[u][v] is smaller than key[v]
-            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v])
-            {
-                parent[v] = u;
-                key[v] = graph[u][v];
-            }
-        }
+        mstSet[u] = 1;
+
+        for (int v = 0; v < n; v++)
+            if (cost[u][v] && !mstSet[v] && cost[u][v] < key[v])
+                parent[v] = u, key[v] = cost[u][v];
     }
 
-    // Print the constructed MST
-    printMST(parent, graph);
+    printf("Edge   Weight\n");
+    for (int i = 1; i < n; i++)
+        printf("%d - %d    %d\n", parent[i], i, cost[i][parent[i]]);
 }
 
 int main()
 {
-    // Sample graph represented as adjacency matrix
-    int graph[V][V] = {
-        {0, 2, 0, 6, 0},
-        {2, 0, 3, 8, 5},
-        {0, 3, 0, 0, 7},
-        {6, 8, 0, 0, 9},
-        {0, 5, 7, 9, 0}};
+    int n = 4; // Number of vertices
+    int cost[MAX][MAX] = {
+        {INF, 2, INF, 6},
+        {2, INF, 3, 8},
+        {INF, 3, INF, 5},
+        {6, 8, 5, INF}};
 
-    // Print the Minimum Spanning Tree
-    primMST(graph);
-
+    prim(n, cost);
     return 0;
 }

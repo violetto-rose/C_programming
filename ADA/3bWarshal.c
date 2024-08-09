@@ -1,56 +1,44 @@
-// b. Design and implement C Program to find the transitive closure using Warshal's algorithm.
-#include <stdio.h>
+// b. Design and implement C Program to find the transitive closure using Warshal's algorithm.#include <stdio.h>
 
-#define V 4
+/*
+Input: The reach[][] matrix represents the adjacency matrix of the graph, where 1 indicates a direct edge between vertices, and 0 indicates no direct edge.
 
-// Function to print the transitive closure matrix
-void printTransitiveClosure(int graph[][V])
-{
-    printf("Transitive Closure Matrix:\n");
-    for (int i = 0; i < V; i++)
-    {
-        for (int j = 0; j < V; j++)
-        {
-            printf("%d ", graph[i][j]);
+Warshall’s Algorithm:
+
+It iteratively checks if there is a path from vertex i to vertex j through some intermediate vertex k.
+If such a path exists, it updates the reach[i][j] to 1.
+Output: The transitive closure matrix, which shows whether there is a path between every pair of vertices.
+*/
+
+#define MAX 100
+
+void warshall(int n, int reach[MAX][MAX]) {
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);
+            }
+        }
+    }
+
+    printf("Transitive closure matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ", reach[i][j]);
         }
         printf("\n");
     }
 }
 
-// Function to find transitive closure using Warshall's algorithm
-void transitiveClosure(int graph[][V])
-{
-    int reach[V][V];
-    // Initialize the reach[][] matrix to the given graph
-    for (int i = 0; i < V; i++)
-    {
-        for (int j = 0; j < V; j++)
-        {
-            reach[i][j] = graph[i][j];
-        }
-    }
-    // Warshall's algorithm to find transitive closure
-    for (int k = 0; k < V; k++)
-    {
-        for (int i = 0; i < V; i++)
-        {
-            for (int j = 0; j < V; j++)
-            {
-                reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);
-            }
-        }
-    }
-    // Print the transitive closure matrix
-    printTransitiveClosure(reach);
-}
-
-int main()
-{
-    int graph[V][V] = {
+int main() {
+    int n = 4; // Number of vertices
+    int reach[MAX][MAX] = {
         {1, 1, 0, 1},
         {0, 1, 1, 0},
         {0, 0, 1, 1},
-        {0, 0, 0, 1}};
-    transitiveClosure(graph);
+        {0, 0, 0, 1}
+    };
+
+    warshall(n, reach);
     return 0;
 }

@@ -1,70 +1,63 @@
 // a. Design and implement C Program to solve All-Pairs Shortest Paths problem using Floyd's algorithm.
+
+/*
+Data Structures:
+
+dist[][]: Matrix storing shortest distances between every pair of vertices. Initialized to the adjacency matrix of the graph.
+
+Floyd-Warshall Algorithm:
+
+Initialization: dist[i][j] holds the shortest known distance from vertex i to vertex j.
+Update Distances: For each possible intermediate vertex k, update the shortest path between every pair of vertices (i, j) by considering if the path through k is shorter.
+
+Main Function:
+
+The dist matrix initializes the graph with distances where INF denotes no direct edge.
+floydWarshall() computes the shortest paths between all pairs of vertices.
+*/
+
 #include <stdio.h>
-#include <limits.h>
 
-#define V 4         // Number of vertices in the graph
-#define INF INT_MAX // Define infinity as the maximum integer value
+#define MAX 100
+#define INF 9999
 
-// Function to print the solution matrix
-void printSolution(int dist[][V])
+void floydWarshall(int n, int dist[MAX][MAX])
 {
-    printf("Shortest distances between every pair of vertices:\n");
-    for (int i = 0; i < V; i++)
+    for (int k = 0; k < n; k++)
     {
-        for (int j = 0; j < V; j++)
+        for (int i = 0; i < n; i++)
         {
-            if (dist[i][j] == INF)
-                printf("INF\t");
-            else
-                printf("%d\t", dist[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-// Floyd's algorithm to find all pair shortest paths
-void floydWarshall(int graph[][V])
-{
-    int dist[V][V]; // Output matrix that will have the shortest distances between every pair of vertices
-
-    // Initialize the solution matrix same as input graph matrix. Or we can say dist[i][j] will be the shortest distance between i and j if there is a direct path between them, otherwise INF.
-    for (int i = 0; i < V; i++)
-        for (int j = 0; j < V; j++)
-            dist[i][j] = graph[i][j];
-
-    // Add all vertices one by one to the set of intermediate vertices.
-    // Before start of an iteration, we have shortest distances between all pairs of vertices such that the shortest distances consider only the vertices in set {0, 1, 2, .. k-1} as intermediate vertices.
-    // After the end of an iteration, vertex no. k is added to the set of intermediate vertices and the set becomes {0, 1, 2, .. k}.
-    for (int k = 0; k < V; k++)
-    {
-        // Pick all vertices as source one by one
-        for (int i = 0; i < V; i++)
-        {
-            // Pick all vertices as destination for the above picked source
-            for (int j = 0; j < V; j++)
+            for (int j = 0; j < n; j++)
             {
-                // If vertex k is on the shortest path from i to j, then update the value of dist[i][j]
-                if (dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j])
+                if (dist[i][k] + dist[k][j] < dist[i][j])
                     dist[i][j] = dist[i][k] + dist[k][j];
             }
         }
     }
 
-    // Print the shortest distance matrix
-    printSolution(dist);
+    printf("Shortest distances between every pair of vertices:\n");
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (dist[i][j] == INF)
+                printf("%7s", "INF");
+            else
+                printf("%7d", dist[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 int main()
 {
-    // Sample graph represented as adjacency matrix
-    int graph[V][V] = {
-        {0, 5, INF, 10},
-        {INF, 0, 3, INF},
-        {INF, INF, 0, 1},
-        {INF, INF, INF, 0}};
+    int n = 4; // Number of vertices
+    int dist[MAX][MAX] = {
+        {0, 3, INF, 7},
+        {8, 0, 2, INF},
+        {5, INF, 0, 1},
+        {2, INF, INF, 0}};
 
-    // Call the function to find all pair shortest paths
-    floydWarshall(graph);
-
+    floydWarshall(n, dist);
     return 0;
 }
