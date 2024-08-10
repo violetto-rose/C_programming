@@ -1,99 +1,69 @@
 // Design and implement C Program to solve discrete Knapsack and continuous Knapsack problems using greedy approximation method.
-#include <stdio.h>
-#include <stdlib.h>
 
-typedef struct
-{
+/*
+Items Sorting: Items are sorted by their value-to-weight ratio.
+
+Greedy Knapsack Function:
+Handles both Fractional and Discrete knapsack based on the isFractional flag.
+If isFractional is 1, it allows taking fractions of items.
+If isFractional is 0, it only allows entire items.
+
+Main Function:
+Calls the greedy knapsack function twice: once for the Discrete Knapsack and once for the Fractional Knapsack.
+*/
+
+#include <stdio.h>
+
+#define MAX 100
+
+typedef struct {
     int value;
     int weight;
     float ratio;
 } Item;
 
-int compare(const void *a, const void *b)
-{
-    Item *itemA = (Item *)a;
-    Item *itemB = (Item *)b;
-    return (itemB->ratio > itemA->ratio) - (itemB->ratio < itemA->ratio);
-}
-
-void discreteKnapsack(int capacity, Item items[], int n)
-{
-    qsort(items, n, sizeof(Item), compare);
-
-    int totalWeight = 0;
-    int totalValue = 0;
-
-    printf("Discrete Knapsack - Items taken into the knapsack:\n");
-    for (int i = 0; i < n; i++)
-    {
-        if (totalWeight + items[i].weight <= capacity)
-        {
-            totalWeight += items[i].weight;
-            totalValue += items[i].value;
-            printf("Item %d - Value: %d, Weight: %d\n", i + 1, items[i].value, items[i].weight);
+void greedyKnapsack(int W, Item items[], int n, int isFractional) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (items[i].ratio < items[j].ratio) {
+                Item temp = items[i];
+                items[i] = items[j];
+                items[j] = temp;
+            }
         }
     }
-    printf("Total weight: %d\n", totalWeight);
-    printf("Total value: %d\n", totalValue);
-}
 
-void fractionalKnapsack(int capacity, Item items[], int n)
-{
-    qsort(items, n, sizeof(Item), compare);
-
-    int totalWeight = 0;
-    float totalValue = 0.0;
-
-    printf("Continuous Knapsack - Items taken into the knapsack:\n");
-    for (int i = 0; i < n; i++)
-    {
-        if (totalWeight + items[i].weight <= capacity)
-        {
-            totalWeight += items[i].weight;
+    float totalValue = 0;
+    for (int i = 0; i < n && W > 0; i++) {
+        if (items[i].weight <= W) {
+            W -= items[i].weight;
             totalValue += items[i].value;
-            printf("Item %d - Value: %d, Weight: %d\n", i + 1, items[i].value, items[i].weight);
-        }
-        else
-        {
-            int remain = capacity - totalWeight;
-            totalValue += items[i].value * ((float)remain / items[i].weight);
-            printf("Item %d - Value: %.2f, Weight: %d (fractional)\n", i + 1, items[i].value * ((float)remain / items[i].weight), remain);
-            totalWeight += remain;
+        } else if (isFractional) {
+            totalValue += items[i].value * ((float)W / items[i].weight);
             break;
         }
     }
-    printf("Total weight: %d\n", totalWeight);
-    printf("Total value: %.2f\n", totalValue);
+
+    printf("Maximum value in Knapsack = %.2f\n", totalValue);
 }
 
-int main()
-{
-    int n, capacity;
-    printf("Enter the number of items: ");
-    scanf("%d", &n);
-    printf("Enter the capacity of the knapsack: ");
-    scanf("%d", &capacity);
+int main() {
+    Item items[] = {{60, 10}, {100, 20}, {120, 30}};
+    int n = sizeof(items) / sizeof(items[0]);
+    int W = 50; // Maximum weight capacity of the knapsack
 
-    Item *items = (Item *)malloc(n * sizeof(Item));
-    if (items == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
-
-    for (int i = 0; i < n; i++) 
-    {
-        printf("Enter value and weight of item %d: ", i + 1);
-        scanf("%d %d", &items[i].value, &items[i].weight);
+    for (int i = 0; i < n; i++) {
         items[i].ratio = (float)items[i].value / items[i].weight;
     }
 
-    printf("\n=== Discrete Knapsack ===\n");
-    discreteKnapsack(capacity, items, n);
+    // Call for Discrete Knapsack (0/1 Knapsack)
+    printf("Discrete Knapsack:\n");
+    greedyKnapsack(W, items, n, 0);
 
-    printf("\n=== Continuous Knapsack ===\n");
-    fractionalKnapsack(capacity, items, n);
+    // Call for Fractional Knapsack
+    printf("Fractional Knapsack:\n");
+    greedyKnapsack(W, items, n, 1);
 
-    free(items);
     return 0;
 }
+

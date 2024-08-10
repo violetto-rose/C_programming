@@ -1,108 +1,77 @@
 // Design and implement C Program to obtain the Topological ordering of vertices in a given digraph.
+
+/*
+Data Structures:
+
+stack[]: Used to store the vertices in topological order.
+visited[]: Array to track visited vertices during DFS.
+
+Topological Sorting:
+
+DFS Utility: The topologicalSortUtil() function performs a DFS starting from a given vertex v. After visiting all its adjacent vertices, the vertex v is pushed onto the stack.
+Topological Sort: The topologicalSort() function iterates over all vertices, performing DFS for each unvisited vertex. The vertices are then popped from the stack to produce the topological order.
+
+Main Function:
+
+The adj matrix represents the adjacency matrix of the directed graph.
+The topologicalSort() function is called to generate the topological order of the vertices.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
-#define V 6 // Number of vertices
+#define MAX 100
 
-// Data structure to represent a graph node
-struct GraphNode
-{
-    int vertex;
-    struct GraphNode *next;
-};
+int stack[MAX];
+int top = -1;
 
-// Data structure to represent a graph
-struct Graph
-{
-    int numVertices;
-    struct GraphNode **adjLists;
-    int *indegree;
-};
-
-// Function to create a new graph node
-struct GraphNode *createNode(int v)
-{
-    struct GraphNode *newNode = (struct GraphNode *)malloc(sizeof(struct GraphNode));
-    newNode->vertex = v;
-    newNode->next = NULL;
-    return newNode;
+void push(int v) {
+    stack[++top] = v;
 }
 
-// Function to create a graph with given number of vertices
-struct Graph *createGraph(int vertices)
-{
-    struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
-    graph->numVertices = vertices;
-    graph->adjLists = (struct GraphNode **)malloc(vertices * sizeof(struct GraphNode *));
-    graph->indegree = (int *)calloc(vertices, sizeof(int)); // Initialize indegree array with 0
-
-    for (int i = 0; i < vertices; i++)
-    {
-        graph->adjLists[i] = NULL;
-    }
-    return graph;
+int pop() {
+    return stack[top--];
 }
 
-// Function to add an edge to the graph
-void addEdge(struct Graph *graph, int src, int dest)
-{
-    struct GraphNode *newNode = createNode(dest);
-    newNode->next = graph->adjLists[src];
-    graph->adjLists[src] = newNode;
-    graph->indegree[dest]++;
-}
+void topologicalSortUtil(int v, int visited[], int adj[MAX][MAX], int n) {
+    visited[v] = 1;
 
-// Function to perform topological sorting
-void topologicalSort(struct Graph *graph)
-{
-    int *indegree = graph->indegree;
-    bool *visited = (bool *)calloc(graph->numVertices, sizeof(bool));
-    int *queue = (int *)malloc(graph->numVertices * sizeof(int));
-    int front = 0, rear = 0;
-
-    for (int i = 0; i < graph->numVertices; i++)
-    {
-        if (indegree[i] == 0)
-        {
-            queue[rear++] = i;
-            visited[i] = true;
+    for (int i = 0; i < n; i++) {
+        if (adj[v][i] && !visited[i]) {
+            topologicalSortUtil(i, visited, adj, n);
         }
     }
 
-    while (front != rear)
-    {
-        int u = queue[front++];
-        printf("%d ", u); // Print the vertex in topological order
-        struct GraphNode *temp = graph->adjLists[u];
-        while (temp != NULL)
-        {
-            indegree[temp->vertex]--;
-            if (indegree[temp->vertex] == 0 && !visited[temp->vertex])
-            {
-                queue[rear++] = temp->vertex;
-                visited[temp->vertex] = true;
-            }
-            temp = temp->next;
+    push(v);
+}
+
+void topologicalSort(int adj[MAX][MAX], int n) {
+    int visited[MAX] = {0};
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            topologicalSortUtil(i, visited, adj, n);
         }
     }
 
-    free(queue);
-    free(visited);
+    printf("Topological Order: ");
+    while (top >= 0) {
+        printf("%d ", pop());
+    }
+    printf("\n");
 }
 
-int main()
-{
-    struct Graph *graph = createGraph(V);
-    addEdge(graph, 5, 2);
-    addEdge(graph, 5, 0);
-    addEdge(graph, 4, 0);
-    addEdge(graph, 4, 1);
-    addEdge(graph, 2, 3);
-    addEdge(graph, 3, 1);
+int main() {
+    int n = 6; // Number of vertices
+    int adj[MAX][MAX] = {
+        {0, 1, 1, 0, 0, 0},
+        {0, 0, 1, 1, 0, 0},
+        {0, 0, 0, 1, 1, 0},
+        {0, 0, 0, 0, 1, 1},
+        {0, 0, 0, 0, 0, 1},
+        {0, 0, 0, 0, 0, 0}
+    };
 
-    printf("Topological ordering of vertices: ");
-    topologicalSort(graph);
-
+    topologicalSort(adj, n);
     return 0;
 }
