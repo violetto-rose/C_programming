@@ -10,6 +10,8 @@ If such a path exists, it updates the reach[i][j] to 1.
 Output: The transitive closure matrix, which shows whether there is a path between every pair of vertices.
 */
 
+#include <stdio.h>
+
 #define MAX 100
 
 void warshall(int n, int reach[MAX][MAX]) {
