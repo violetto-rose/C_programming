@@ -25,19 +25,24 @@ The topologicalSort() function is called to generate the topological order of th
 int stack[MAX];
 int top = -1;
 
-void push(int v) {
+void push(int v)
+{
     stack[++top] = v;
 }
 
-int pop() {
+int pop()
+{
     return stack[top--];
 }
 
-void topologicalSortUtil(int v, int visited[], int adj[MAX][MAX], int n) {
+void topologicalSortUtil(int v, int visited[], int adj[MAX][MAX], int n)
+{
     visited[v] = 1;
 
-    for (int i = 0; i < n; i++) {
-        if (adj[v][i] && !visited[i]) {
+    for (int i = 0; i < n; i++)
+    {
+        if (adj[v][i] && !visited[i])
+        {
             topologicalSortUtil(i, visited, adj, n);
         }
     }
@@ -45,23 +50,28 @@ void topologicalSortUtil(int v, int visited[], int adj[MAX][MAX], int n) {
     push(v);
 }
 
-void topologicalSort(int adj[MAX][MAX], int n) {
+void topologicalSort(int adj[MAX][MAX], int n)
+{
     int visited[MAX] = {0};
 
-    for (int i = 0; i < n; i++) {
-        if (!visited[i]) {
+    for (int i = 0; i < n; i++)
+    {
+        if (!visited[i])
+        {
             topologicalSortUtil(i, visited, adj, n);
         }
     }
 
     printf("Topological Order: ");
-    while (top >= 0) {
+    while (top >= 0)
+    {
         printf("%d ", pop());
     }
     printf("\n");
 }
 
-int main() {
+int main()
+{
     int n = 6; // Number of vertices
     int adj[MAX][MAX] = {
         {0, 1, 1, 0, 0, 0},
@@ -69,8 +79,7 @@ int main() {
         {0, 0, 0, 1, 1, 0},
         {0, 0, 0, 0, 1, 1},
         {0, 0, 0, 0, 0, 1},
-        {0, 0, 0, 0, 0, 0}
-    };
+        {0, 0, 0, 0, 0, 0}};
 
     topologicalSort(adj, n);
     return 0;

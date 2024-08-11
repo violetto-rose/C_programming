@@ -1,42 +1,48 @@
 // Design and implement C Program to find a subset of a given set S = {sl , s2,.....,sn} of n positive integers whose sum is equal to a given positive integer d.
 
 /*
-Recursive Function (isSubsetSum):
+Function findSubset:
 
-Base Cases:
-If sum is 0, then a subset with the desired sum has been found, so return 1 (true).
-If n (number of elements) is 0 and the sum is not 0, then no such subset exists, so return 0 (false).
-Exclude the Last Element: If the last element of the set is greater than sum, it can't be included in the subset, so check for the sum excluding this element.
-Include or Exclude the Last Element: Check if a subset exists with or without including the last element of the set.
+Base Case: If the target sum d is 0, print the current subset and return true.
+Stopping Case: If no elements are left (n == 0) or the sum becomes negative (d < 0), return false.
+Recursive Calls:
+Include Last Element: Recursively try to find a subset that includes the current last element.
+Exclude Last Element: Recursively try to find a subset that does not include the current last element.
 
 Main Function:
 
-Defines a set of integers and the desired sum.
-Calls isSubsetSum to determine if a subset exists with the given sum and prints the result.
+Initializes the set S, target sum d, and a temporary subset array.
+Calls findSubset to find and print a valid subset. If no subset is found, prints a message.
 */
 
 #include <stdio.h>
+#include <stdbool.h>
 
-int isSubsetSum(int set[], int n, int sum) {
-    if (sum == 0) return 1;
-    if (n == 0 && sum != 0) return 0;
+bool findSubset(int S[], int n, int d, int subset[], int subsetSize) {
+    if (d == 0) {
+        printf("Subset found: ");
+        for (int i = 0; i < subsetSize; i++) {
+            printf("%d ", subset[i]);
+        }
+        printf("\n");
+        return true;
+    }
+    if (n == 0 || d < 0) return false;
 
-    if (set[n-1] > sum)
-        return isSubsetSum(set, n-1, sum);
-
-    return isSubsetSum(set, n-1, sum) || isSubsetSum(set, n-1, sum-set[n-1]);
+    subset[subsetSize] = S[n - 1];
+    if (findSubset(S, n - 1, d - S[n - 1], subset, subsetSize + 1)) return true;
+    return findSubset(S, n - 1, d, subset, subsetSize);
 }
 
 int main() {
-    int set[] = {3, 34, 4, 12, 5, 2};
-    int sum = 9;
-    int n = sizeof(set) / sizeof(set[0]);
+    int S[] = {3, 34, 4, 12, 5, 2};
+    int d = 9;
+    int n = sizeof(S) / sizeof(S[0]);
+    int subset[n];
 
-    if (isSubsetSum(set, n, sum) == 1)
-        printf("Found a subset with the given sum\n");
-    else
-        printf("No subset with the given sum\n");
+    if (!findSubset(S, n, d, subset, 0)) {
+        printf("No subset with sum %d\n", d);
+    }
 
     return 0;
 }
-

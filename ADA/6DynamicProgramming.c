@@ -25,15 +25,19 @@ The knapsack() function computes the maximum value that can be carried in the kn
 
 #define MAX 100
 
-int max(int a, int b) {
+int max(int a, int b)
+{
     return (a > b) ? a : b;
 }
 
-void knapsack(int W, int wt[], int val[], int n) {
+void knapsack(int W, int wt[], int val[], int n)
+{
     int dp[MAX][MAX];
 
-    for (int i = 0; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
+    for (int i = 0; i <= n; i++)
+    {
+        for (int w = 0; w <= W; w++)
+        {
             if (i == 0 || w == 0)
                 dp[i][w] = 0;
             else if (wt[i - 1] <= w)
@@ -46,7 +50,8 @@ void knapsack(int W, int wt[], int val[], int n) {
     printf("Maximum value in Knapsack = %d\n", dp[n][W]);
 }
 
-int main() {
+int main()
+{
     int val[] = {60, 100, 120};
     int wt[] = {10, 20, 30};
     int W = 50; // Maximum weight capacity of the knapsack

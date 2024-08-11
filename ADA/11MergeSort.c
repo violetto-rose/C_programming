@@ -1,26 +1,18 @@
 #include <stdio.h>
 
-// Function to merge two subarrays of arr[]
-void merge(int arr[], int left, int mid, int right)
+void merge(int arr[], int l, int m, int r)
 {
-    int i, j, k;
-    int n1 = mid - left + 1; // Size of the left subarray
-    int n2 = right - mid;    // Size of the right subarray
+    int n1 = m - l + 1;
+    int n2 = r - m;
 
-    // Create temporary arrays
     int L[n1], R[n2];
 
-    // Copy data to temporary arrays L[] and R[]
-    for (i = 0; i < n1; i++)
-        L[i] = arr[left + i];
-    for (j = 0; j < n2; j++)
-        R[j] = arr[mid + 1 + j];
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
 
-    // Merge the temporary arrays back into arr[left..right]
-    i = 0;    // Initial index of the first subarray
-    j = 0;    // Initial index of the second subarray
-    k = left; // Initial index of the merged subarray
-
+    int i = 0, j = 0, k = l;
     while (i < n1 && j < n2)
     {
         if (L[i] <= R[j])
@@ -36,7 +28,6 @@ void merge(int arr[], int left, int mid, int right)
         k++;
     }
 
-    // Copy the remaining elements of L[], if there are any
     while (i < n1)
     {
         arr[k] = L[i];
@@ -44,7 +35,6 @@ void merge(int arr[], int left, int mid, int right)
         k++;
     }
 
-    // Copy the remaining elements of R[], if there are any
     while (j < n2)
     {
         arr[k] = R[j];
@@ -53,24 +43,19 @@ void merge(int arr[], int left, int mid, int right)
     }
 }
 
-// Function to implement merge sort
-void mergeSort(int arr[], int left, int right)
+void mergeSort(int arr[], int l, int r)
 {
-    if (left < right)
+    if (l < r)
     {
-        // Find the middle point
-        int mid = left + (right - left) / 2;
+        int m = l + (r - l) / 2;
 
-        // Recursively sort the first and second halves
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
 
-        // Merge the sorted halves
-        merge(arr, left, mid, right);
+        merge(arr, l, m, r);
     }
 }
 
-// Function to print an array
 void printArray(int arr[], int size)
 {
     for (int i = 0; i < size; i++)
@@ -92,5 +77,6 @@ int main()
 
     printf("Sorted array: \n");
     printArray(arr, arr_size);
+
     return 0;
 }
