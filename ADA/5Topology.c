@@ -72,14 +72,12 @@ void topologicalSort(int adj[MAX][MAX], int n)
 
 int main()
 {
-    int n = 6; // Number of vertices
+    int n = 4; // Number of vertices
     int adj[MAX][MAX] = {
-        {0, 1, 1, 0, 0, 0},
-        {0, 0, 1, 1, 0, 0},
-        {0, 0, 0, 1, 1, 0},
-        {0, 0, 0, 0, 1, 1},
-        {0, 0, 0, 0, 0, 1},
-        {0, 0, 0, 0, 0, 0}};
+        {0, 1, 0, 1},
+        {0, 0, 0, 1},
+        {0, 0, 0, 0},
+        {0, 0, 1, 0}};
 
     topologicalSort(adj, n);
     return 0;
